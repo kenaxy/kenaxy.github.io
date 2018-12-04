@@ -107,13 +107,13 @@
 <meta property="og:site_name" content="可拿小鱼">
 <meta property="og:description" content="最近连着部署了几个阿里云的ECS的服务器，趁着印象还比较清晰，将搭建过程记录下来，以备将来忘记。 环境搭建软件 环境：Centos7.4 x86_64 软件：nginx/1.14.1、PHP7.2.12、MySQL5.7.17、vsftpd 3.0.2  软件目录在/home/目录下面新建一个soft的目录，用来下载所有的安装软件，并将所有的软件安装在/usr/local/目录下面 一、Ngin">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="/04/阿里云服务器搭建/1543920537472.jpg">
-<meta property="og:image" content="/04/阿里云服务器搭建/1543926632632.jpg">
-<meta property="og:updated_time" content="2018-12-04T12:42:20.126Z">
+<meta property="og:image" content="/04/阿里云服务器搭建/2018/04/阿里云服务器搭建/1543920537472.jpg">
+<meta property="og:image" content="/04/阿里云服务器搭建/2018/04/阿里云服务器搭建/1543926632632.jpg">
+<meta property="og:updated_time" content="2018-12-04T12:48:35.154Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阿里云服务器搭建">
 <meta name="twitter:description" content="最近连着部署了几个阿里云的ECS的服务器，趁着印象还比较清晰，将搭建过程记录下来，以备将来忘记。 环境搭建软件 环境：Centos7.4 x86_64 软件：nginx/1.14.1、PHP7.2.12、MySQL5.7.17、vsftpd 3.0.2  软件目录在/home/目录下面新建一个soft的目录，用来下载所有的安装软件，并将所有的软件安装在/usr/local/目录下面 一、Ngin">
-<meta name="twitter:image" content="/04/阿里云服务器搭建/1543920537472.jpg">
+<meta name="twitter:image" content="/04/阿里云服务器搭建/2018/04/阿里云服务器搭建/1543920537472.jpg">
 
 
 
@@ -406,7 +406,7 @@
 <h3 id="二、PHP安装"><a href="#二、PHP安装" class="headerlink" title="二、PHP安装"></a>二、PHP安装</h3><p>1.安装依赖包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libmcrypt libmcrypt-devel mhash mhash-devel libxml2 libxml2-devel bzip2 bzip2-devel</span><br></pre></td></tr></table></figure></p>
 <p>2.下载源码包编辑安装命令<br>PHP的FPM模块不在作为一个第三方的包来引入了，编译PHP的时候一定要加上一个条件–enable-fpm，否则安装的PHP里面不会有FPM模块。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cd /home/soft</span><br><span class="line">wget http://cn2.php.net/distributions/php-7.2.12.tar.gz</span><br><span class="line">tar -zxvf php-7.2.12.tar.gz</span><br><span class="line">cd php-7.2.12</span><br><span class="line">./configure --prefix=/usr/local/php \</span><br><span class="line">--enable-fpm</span><br><span class="line">--with-config-file-path=/etc \</span><br><span class="line">--with-mysql=/usr/local/mysql \</span><br><span class="line">--with-mysqli=/usr/local/mysql/bin/mysql_config \</span><br><span class="line">--enable-mbstring \</span><br><span class="line">--with-freetype-dir \</span><br><span class="line">--with-jpeg-dir \</span><br><span class="line">--with-png-dir \</span><br><span class="line">--with-zlib \</span><br><span class="line">--with-libxml-dir=/usr \</span><br><span class="line">--with-openssl \</span><br><span class="line">--enable-xml \</span><br><span class="line">--enable-sockets \</span><br><span class="line">--enable-fpm \</span><br><span class="line">--with-mcrypt \</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
 <p>3.配置PHP和PHP-FPM的配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp php.ini-production /etc/php.ini</span><br><span class="line">cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf</span><br><span class="line">cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf</span><br></pre></td></tr></table></figure></p>
-<p>修改/usr/local/php/etc/php-fpm.d/的配置文件将运行的用户改为nginx<br><img src="/04/阿里云服务器搭建/1543920537472.jpg" alt="你想输入的替代文字"><br>4.添加PHP-FPM启动脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp php-7.2.12/sapi/fpm/init.d.p hp-fpm.in /etc/init.d/php-fpm</span><br></pre></td></tr></table></figure></p>
+<p>修改/usr/local/php/etc/php-fpm.d/的配置文件将运行的用户改为nginx<br><img src="/04/阿里云服务器搭建/2018/04/阿里云服务器搭建/1543920537472.jpg" alt="你想输入的替代文字"><br>4.添加PHP-FPM启动脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp php-7.2.12/sapi/fpm/init.d.p hp-fpm.in /etc/init.d/php-fpm</span><br></pre></td></tr></table></figure></p>
 <p>5.添加PHP-FPM至服务列表并设置开机自启<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add php-fpm </span><br><span class="line">chkconfig php-fpm on</span><br></pre></td></tr></table></figure></p>
 <p>6.启动服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service php-fpm start</span><br></pre></td></tr></table></figure></p>
 <p>7.添加Nginx对FastCGI的支持<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">    fastcgi_index  index.php;</span><br><span class="line">    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span><br><span class="line">    include        fastcgi_params;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -422,7 +422,7 @@
 <h3 id="四、FTP安装"><a href="#四、FTP安装" class="headerlink" title="四、FTP安装"></a>四、FTP安装</h3><p>搭建服务器的FTP首先在阿里云上将20/21端口放开。使用的一个服务器端FTP软件是vsftpd。<br>1.安装软件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep vsftpd #查看是否安装相应的包</span><br><span class="line">yum install -y vsftpd</span><br></pre></td></tr></table></figure></p>
 <p>2.FTP配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/vsftpd/vsftpd.conf</span><br></pre></td></tr></table></figure></p>
 <p>将<strong>anonymous_enable</strong>这个配置项目为NO，禁用匿名用户登录。设置<strong>chroot_list_enable=YES</strong>，<strong>chroot_list_file=/etc/vsftpd/chroot_list</strong>，然后将需要登录的用户nginx写入chroot_list里面就可以使用这个用户登录了。</p>
-<p>3.登录ftp过程出现的问题：<br>FTP客户端可以连接FTP服务端，但“读取目录列表失败”<br>解决方法：<br>在配置文件中添加这几段<br><img src="/04/阿里云服务器搭建/1543926632632.jpg" alt="你想输入的替代文字"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">write_enable=YES # 可写权限</span><br><span class="line">pasv_enable=YES  # 启用pasv模式</span><br><span class="line">pasv_min_port=30000 # 设置pasv模式中的可用端口范围（开始）</span><br><span class="line">pasv_max_port=30100 # 设置pasv模式中的可用端口范围（结束）</span><br><span class="line">pasv_address=39.108.4.89 # 设置pasv模式中的外网IP</span><br><span class="line">seccomp_sandbox=NO # 关闭 seccomp 功能</span><br></pre></td></tr></table></figure></p>
+<p>3.登录ftp过程出现的问题：<br>FTP客户端可以连接FTP服务端，但“读取目录列表失败”<br>解决方法：<br>在配置文件中添加这几段<br><img src="/04/阿里云服务器搭建/2018/04/阿里云服务器搭建/1543926632632.jpg" alt="你想输入的替代文字"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">write_enable=YES # 可写权限</span><br><span class="line">pasv_enable=YES  # 启用pasv模式</span><br><span class="line">pasv_min_port=30000 # 设置pasv模式中的可用端口范围（开始）</span><br><span class="line">pasv_max_port=30100 # 设置pasv模式中的可用端口范围（结束）</span><br><span class="line">pasv_address=39.108.4.89 # 设置pasv模式中的外网IP</span><br><span class="line">seccomp_sandbox=NO # 关闭 seccomp 功能</span><br></pre></td></tr></table></figure></p>
 <p>然后在ECS实例安全组中，分别增加条规则，允许相应的tcp端口访问（tcp 3000到30100端口）</p>
 
       
@@ -572,18 +572,6 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
                     
                       
                     
